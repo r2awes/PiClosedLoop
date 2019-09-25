@@ -1,0 +1,52 @@
+{
+	"version": 1,
+	"start": "2019-09-21T01:55:00.000Z",
+	"end": "2019-09-22T02:55:00.000Z",
+	"bg": [
+		{
+			"time": "2019-09-21T01:55:00.000Z",
+			"level": 124,
+			"scale": true,
+			"trend": 2
+		},
+		{ 
+			"...": "..."
+		 },
+		{
+			"time": "2019-09-22T01:55:00.000Z",
+			"level": 95,
+			"scale": true,
+			"trend": 1
+		}
+	],
+	"adjustments": [
+		{
+			"time": "2019-09-21T02:10:00.000Z",
+			"quantity": 1.0,
+			"scale": true
+		}
+	],
+	"comments": {
+		"bg": {
+			"scale": {
+				"true": "mg/dl",
+				"false": "mmol/L"
+			},
+			"trend": {
+				"++": 2,
+				"+": 1,
+				"same": 0,
+				"-": -1,
+				"--": -2
+			}
+		},
+		"adjustments": {
+			"when_they_happen": "Adjustments happen if deltabg is positive for more than 15 min.",
+			"is_this_corroborated_by_research": false,
+			"scale": {
+				"true": "medtronic units",
+				"false": "no idea, something else"
+			}
+		}
+	}
+}

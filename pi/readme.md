@@ -1,5 +1,5 @@
 
-# Closed Loop System for Raspberry Pi Zero W and Android
+# Closed Loop System for Raspberry Pi Zero W
 ## by Richard McHorgh
   
 ### Todo:
@@ -50,4 +50,4 @@ Literally all of this is based on my rudimentary idea of how this stuff works, 8
 
 I think I know my body, but I may be wrong. If you use this, it is at your own risk ... so don't sue me chief. Its not my fault if you are as stupid as me. 
 			
-			-Richard :-)
+-Richard :-)

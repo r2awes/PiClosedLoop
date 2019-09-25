@@ -1,4 +1,5 @@
 from datetime import datetime
+import json
 
 class bgreading():
 	time = ""
@@ -12,9 +13,19 @@ class bgreading():
 		self.trend = trend
 		self.scale = scale
 
-	def toJSONString(self):
-		return "{ \'time\': {}, \'level\': {}, \'scale\': {}, \'trend\': {}}".format(self.time.isoformat(), self.level, self.scale, self.trend)
-
-
-r = bgreading(200, -2)
-print(r.toJSONString())
+	def toDic(self):
+		time = self.time.isoformat() + "Z"
+		
+		scale = ""
+		if(self.scale):
+			scale = "mg/dl"
+		else:
+			scale = "mmol/L"
+			
+		print("At {}, blood glucose level was {} {}.".format(time, self.level, scale))
+		return {
+			"time": time,
+			"level": self.level,
+			"scale": self.scale,
+			"trend": self.trend
+		}

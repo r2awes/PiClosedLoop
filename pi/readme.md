@@ -7,7 +7,7 @@
 - [ ] Get Bolus Parameters
 - [ ] Get Basal Parameters
 - [ ] Get Closed Loop Parameter
-- [ ] Record Keeping
+- [ x ] Record Keeping
 - [ ] Write, or borrow closed loop functions
 - [ ] Bluetooth Interface with Android
 - [ ] GUI

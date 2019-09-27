@@ -1,0 +1,27 @@
+{
+	"version": 1,
+	"bolus": {
+		"carbUnits": true,
+		"carbRatios": [
+			[0, 0, 10],
+			[5, 30, 8],
+			[10, 0, 10]
+		],
+		"bgUnits": true,
+		"bgTargets": [90, 110],
+		"activeInsulinTime": 3,
+		"scrollRate": 0.1
+	},
+	"basal": [
+		[0, 0, 1.2]
+	],
+	"biometrics": {
+		"height": 165,
+		"weight": 65,
+		"sensitivity": [
+			[0, 0, 40],
+			[21, 0, 80]
+		]
+	},
+	"recordInterval": 24
+}

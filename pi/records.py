@@ -2,8 +2,8 @@ from datetime import datetime, timedelta
 import json
 import os
 
-from bgreading import bgreading
 from bolus import Bolus
+from bg import BG
 
 class Record():
 	recordInterval = 0
@@ -22,6 +22,14 @@ class Record():
 		except IndexError:
 			l = ""
 		return l
+
+	# gets scroll rate setting
+	def getScrollRate(self):
+		return json.loads(open("pi/settings.json", "r").read())["bolus"]["scrollRate"]
+
+	# gets current duty cycle of the servo
+	def getDutyCycle(self):
+		return json.loads(open("pi/bg/"+self.getLatestRecord()+".bg.json").read())["cdc"]
 
 	# stores bg value in a json record
 	def createBGRecord( self, bg ):
@@ -47,7 +55,8 @@ class Record():
 				"start": start,
 				"end": end, 
 				"bg": [ bg.toDic() ],
-				"adjustments": []
+				"adjustments": [],
+				"cdc": 2.5
 			}
 
 			print("Making new record.")
@@ -68,7 +77,6 @@ class Record():
 
 			new = open("pi/bg/" + self.latestRecord + ".bg.json", "w+")
 			j = json.dumps( old, indent=2 )
-			print("j:" + j)
 			new.write(j)
 			new.close()
 			print("Record file written to file.")
@@ -77,3 +85,13 @@ class Record():
 	def createAdjRecord(self, adj, j):
 		if( isinstance(adj, bool) == False ):
 			j["adjustments"].append(adj)
+
+	def setDutyCycle( self, dc ):
+		old = json.loads(open("pi/bg/" + self.latestRecord + ".bg.json", "r").read())
+		old["cdc"] = dc
+		old = json.dumps( old, indent=2 )
+		new = open("pi/bg/" + self.latestRecord + ".bg.json", "w+")
+		new.write(old)
+		new.close()
+		print("Current duty cycle recorded to file.")
+

@@ -1,7 +1,7 @@
 from datetime import datetime
 import json
 
-class bgreading():
+class BG():
 	time = ""
 	level = 0
 	trend = 0

@@ -3,11 +3,13 @@
 ## by Richard McHorgh
   
 ### Todo:
+- [x] Record Keeping
+- [x] Deliver Insulin
+- [ ] Create New Record on Site Change
 - [ ] Research
 - [ ] Get Bolus Parameters
 - [ ] Get Basal Parameters
 - [ ] Get Closed Loop Parameter
-- [x] Record Keeping
 - [ ] Write, or borrow closed loop functions
 - [ ] Bluetooth Interface with Android
 - [ ] GUI
@@ -46,7 +48,7 @@ F(Carbohydrate Sensitivity) --> E
 Sorry if I butcher your life's work 
 
 ### Disclaimer
-Literally all of this is based on my rudimentary idea of how this stuff works, 8 years of having Type 1, and like maybe 10 hours of research.
+All of this is based on my rudimentary idea of how this stuff works, 8 years of having Type 1, and a little bit of research.
 
 I think I know my body, but I may be wrong. If you use this, it is at your own risk ... so don't sue me chief. Its not my fault if you are as stupid as me. 
 			

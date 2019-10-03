@@ -3,7 +3,7 @@
 # Written for Raspberry Pi Zero W
 from time import sleep
 
-from bgreading import bgreading
+from bg import BG
 from records import Record
 
 def __main__():
@@ -13,7 +13,7 @@ def __main__():
 	trends = [1, 2, 2]
 	r = Record()
 	for i in range(0, 3):
-		r.createBGRecord( bgreading( bgs[i], trends[i] ) )
+		r.createBGRecord( BG( bgs[i], trends[i] ) )
 		print(bgs[i])
 		sleep( 60 * 5 )
 

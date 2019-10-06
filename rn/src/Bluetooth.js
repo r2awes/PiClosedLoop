@@ -8,6 +8,7 @@ export const BleCx = createContext({
 	setSettings: null,
 	getBGRecord: null,
 	setBGRecord: null,
+	setCx: null
 })
 
 export const BleCm = BleCx.Consumer;
@@ -18,12 +19,13 @@ export class Bluetooth extends Component {
 	
 		this.state = {
 			level: 0,
-			trend: 0,
-			targets: [0, 0],
+			trend: -2,
+			targets: [70, 240],
 			getSettings: this.getSettings,
 			setSettings: this.setSettings,
 			getBGRecord: this.getBGRecord,
 			setBGRecord: this.setBGRecord,
+			setCx: cx => this.setState({...cx})
 		}
 	}
 	

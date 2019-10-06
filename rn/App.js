@@ -1,5 +1,7 @@
 import React from 'react';
-import { createAppContainer, createSwitchNavigator } from 'react-navigation';
+import { SafeAreaView, StatusBar } from 'react-native'
+
+import { createAppContainer, createSwitchNavigator} from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 
 import Home from './src/pages/Home';
@@ -9,22 +11,38 @@ import Settings from './src/pages/Settings';
 import Setup from './src/pages/Setup';
 
 import { Bluetooth } from './src/Bluetooth'
+import Colors from './src/Colors';
+import Header from './src/components/Header';
 
 const AppStack = createStackNavigator({
 	Home,
 	Bolus,
 	Records,
 	Settings
+}, {
+	cardStyle: {
+		backgroundColor: Colors.a
+	},
+	defaultNavigationOptions: {
+		header: HeaderProps => <Header {...HeaderProps}/>
+	}
 });
 
-const AppFlow = createAppContainer(createSwitchNavigator({
-	AppStack,
-	Setup,
-}));
+const AppFlow = createAppContainer(
+	createSwitchNavigator({
+		AppStack,
+		Setup,
+	})
+);
 
 const App = () => (
 	<Bluetooth>
-		<AppFlow />
+		<StatusBar backgroundColor={Colors.a}/>
+		<SafeAreaView style={{
+			flex: 1,
+		}}>
+			<AppFlow />
+		</SafeAreaView>
 	</Bluetooth>
 );
 

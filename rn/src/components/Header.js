@@ -1,32 +1,73 @@
 import React, { Component, Fragment } from 'react';
-import { Text, View } from 'react-native';
+import { Text, ScrollView, View } from 'react-native';
 import Colors from '../Colors';
-
+import posed from 'react-native-pose';
+import ViewPagerAndroid from '@react-native-community/viewpager';
 export default class Header extends Component {
-	render() {
-		return (
-			<Fragment>
-				<View style={{
-					flexDirection: "row",
-					justifyContent: "center",
-					paddingTop: 20
-				}}>
-					<Text style={{
-						fontFamily: "Montserrat-Regular",
-						color: Colors.c,
-						fontSize: 20
-					}}>PiClosedLoop</Text>
-				</View>
-				<View style={{
-					bottom: 0,
-					backgroundColor: "red",
-					position: "absolute",
-					height: 50,
-					width: "100%"
-				}}>
+	constructor(props) {
+		super(props)
+	
+		this.state = {
+			index: 0
+		}
+	}
+	
+	changePage = index => {
+		const pages = [
+			"Home",
+			"Dose",
+			"Records",
+			"Settings"
+		]
+		this.setState({index})
+		this.props.navigation.navigate(pages[index])
+	}
+	
 
-				</View>
-			</Fragment>
+	render() {
+		let {index} = this.state
+		return (
+			<ViewPagerAndroid
+				style={{
+					flexDirection: "row",
+					backgroundColor: Colors.a
+				}}
+				keyboardDismissMode="on-drag"
+				onPageSelected={({nativeEvent}) => this.changePage(nativeEvent.position)}
+			>
+				<MenuButton route="Home" pose={index == 0 ? "here" : "else"} />
+				<MenuButton route="Dose" pose={index == 1 ? "here" : "else"} />
+				<MenuButton route="Records" pose={index == 2 ? "here" : "else"} />
+				<MenuButton route="Settings" pose={index == 3 ? "here" : "else"} />
+			</ViewPagerAndroid>
 		)
 	}
 }
+
+class MenuButton extends Component {
+	render() {
+		let {route, pose} = this.props;
+		return (
+			<Text
+				{...{pose}}
+				initialPose="else"
+				style={{
+					fontFamily: "Montserrat-Regular",
+					fontSize: 40,
+					paddingTop: 20,
+					paddingLeft: 20,
+					color: Colors.c
+				}}
+			>{route}</Text>
+		)
+	}
+}
+
+MenuButton = posed(MenuButton)({
+	here: {
+		opacity: 1
+	},
+	else: {
+		opacity: 0.2
+	}
+})

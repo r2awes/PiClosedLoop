@@ -5,7 +5,7 @@ import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 
 import Home from './src/pages/Home';
-import Bolus from './src/pages/Bolus';
+import Dose from './src/pages/Dose';
 import Records from './src/pages/Records';
 import Settings from './src/pages/Settings';
 import Setup from './src/pages/Setup';
@@ -18,7 +18,7 @@ const { height } = Dimensions.get("window");
 
 const AppStack = createStackNavigator({
 	Home,
-	Bolus,
+	Dose,
 	Records,
 	Settings
 }, {
@@ -27,7 +27,8 @@ const AppStack = createStackNavigator({
 	},
 	defaultNavigationOptions: {
 		header: p => <Header {...p}/>,
-	}
+	},
+	headerMode: "float"
 });
 
 const AppFlow = createAppContainer(

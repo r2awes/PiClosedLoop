@@ -57,13 +57,13 @@ export default class BG extends Component {
 						fontFamily,
 					}}>mg/dl</Text>
 				</View>
-				<TrendRing {...{trend}}/>
+				<TrendRing {...{trend}} initialPose="0"/>
 			</View>
 		)
 	}
 }
 
-const TrendRing = ({trend}) => {
+const TrendRing = ({trend, initialPose}) => {
 	let pose = `${trend * 45}`
 	
 	return (
@@ -76,17 +76,17 @@ const TrendRing = ({trend}) => {
 				zIndex: 0,
 				position: "absolute"
 			}}/>
-			<TrendCircle {...{pose}}/>
+			<TrendCircle {...{pose, initialPose}}/>
 		</Fragment>
 	)
 }
 
 class TrendCircle extends Component {
 	render() {
-		let {pose} = this.props
+		let { pose, initialPose } = this.props
 		return (
 			<View
-				{ ...{pose} }
+				{ ...{ pose, initialPose } }
 				style={{
 					height: rad * .1,
 					width: rad * 2.2,

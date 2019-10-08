@@ -19,7 +19,7 @@ export class Bluetooth extends Component {
 	
 		this.state = {
 			level: 0,
-			trend: -2,
+			trend: 0,
 			targets: [70, 240],
 			getSettings: this.getSettings,
 			setSettings: this.setSettings,
@@ -60,7 +60,7 @@ export class Bluetooth extends Component {
 	}
 
 	getBGRecord = () => {
-		return {
+		let rec = {
 			"version": 1,
 			"start": "2019-10-02T21:51:03.558572Z",
 			"end": "2019-10-03T21:51:03.558577Z",
@@ -82,6 +82,18 @@ export class Bluetooth extends Component {
 					"level": 253,
 					"scale": true,
 					"trend": 2
+				},
+				{
+					"time": "2019-10-02T22:06:03.686581Z",
+					"level": 200,
+					"scale": true,
+					"trend": -2
+				},
+				{
+					"time": "2019-10-02T22:11:03.686581Z",
+					"level": 90,
+					"scale": true,
+					"trend": -1
 				}
 			],
 			"adjustments": [
@@ -93,6 +105,13 @@ export class Bluetooth extends Component {
 			],
 			"cdc": 2.5
 		}
+		let {level, trend} = rec.bg.reverse()[0]
+		this.setState({level, trend})
+
+		rec.adjustments.forEach( a => rec.bg.push(a) )
+		rec.bg.sort( (a, b) => new Date(a.time) < new Date(b.time) )
+
+		return rec
 	}
 	
 	setSettings = setting => {

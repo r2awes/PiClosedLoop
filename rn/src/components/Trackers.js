@@ -1,28 +1,96 @@
 import React, { Component, Fragment } from 'react';
-import { Text, View, Animated } from 'react-native';
+import { Text, View, Animated, Dimensions } from 'react-native';
 import Colors from '../Colors';
 import posed from 'react-native-pose';
 
+let width = Dimensions.get("window").width - 40
+
+export class InsulinLeft extends Component {
+	constructor(props) {
+		super(props)
+
+		this.animatedValue = new Animated.Value(0)
+	}
+
+	componentDidMount() {
+		this.startAnim()
+	}
+
+	startAnim = () => {
+		Animated.timing(this.animatedValue, {
+			toValue: 1,
+			duration: 400
+		}).start()
+	}
+
+	font = t => {
+		if (t > 20) return {
+			fontFamily: "Montserrat-Regular",
+			color: Colors.e
+		}
+		else return {
+			fontFamily: "Montserrat-Medium",
+			color: Colors.b
+		}
+	}
+
+	render() {
+		let { insulinLeft } = this.props;
+		let { fontFamily, color } = this.font(insulinLeft)
+		return (
+			<View style={{
+				height: 100,
+				width,
+				backgroundColor: Colors.d,
+				borderRadius: 10,
+				justifyContent: "center",
+				alignItems: "center",
+			}}>
+				<Animated.View
+					style={{
+						height: 100,
+						width: this.animatedValue.interpolate({
+							inputRange: [0, 1],
+							outputRange: [0, ((width * insulinLeft) / 300)]
+						}),
+						borderRadius: 10,
+						backgroundColor: Colors.c,
+						position: "absolute",
+						left: 0
+					}}
+				/>
+				<Text style={{
+					fontSize: 20,
+					color,
+					fontFamily,
+					position: "absolute",
+					top: 40,
+				}}>{insulinLeft} u</Text>
+			</View>
+		)
+	}
+}
+
 const rad = 100;
 
-export default class BG extends Component {
-	
+export class BG extends Component {
+
 	font = (level, targets) => {
-		if( level >= targets[0] && level < targets[1]) {
-			return { 
-				fontFamily:"Montserrat-Regular", 
+		if (level >= targets[0] && level < targets[1]) {
+			return {
+				fontFamily: "Montserrat-Regular",
 				color: Colors.c
 			}
 		}
 		else if (level >= targets[1]) {
 			return {
-				fontFamily: "Montserrat-Medium", 
+				fontFamily: "Montserrat-Medium",
 				color: Colors.b
 			}
 		}
-		else { 
+		else {
 			return {
-				fontFamily: "Montserrat-Thin", 
+				fontFamily: "Montserrat-Thin",
 				color: Colors.b
 			}
 		}
@@ -30,10 +98,9 @@ export default class BG extends Component {
 
 	render() {
 		let { level, targets, trend } = this.props;
-		let {fontFamily, color} = this.font(level, targets)
+		let { fontFamily, color } = this.font(level, targets)
 		return (
 			<View style={{
-				marginTop: 20,
 				alignItems: "center",
 				justifyContent: "center",
 			}}>
@@ -57,15 +124,15 @@ export default class BG extends Component {
 						fontFamily,
 					}}>mg/dl</Text>
 				</View>
-				<TrendRing {...{trend}} initialPose="0"/>
+				<TrendRing {...{ trend }} initialPose="0" />
 			</View>
 		)
 	}
 }
 
-const TrendRing = ({trend, initialPose}) => {
+const TrendRing = ({ trend, initialPose }) => {
 	let pose = `${trend * 45}`
-	
+
 	return (
 		<Fragment>
 			<View style={{
@@ -75,8 +142,8 @@ const TrendRing = ({trend, initialPose}) => {
 				height: rad * 2.25,
 				zIndex: 0,
 				position: "absolute"
-			}}/>
-			<TrendCircle {...{pose, initialPose}}/>
+			}} />
+			<TrendCircle {...{ pose, initialPose }} />
 		</Fragment>
 	)
 }
@@ -86,7 +153,7 @@ class TrendCircle extends Component {
 		let { pose, initialPose } = this.props
 		return (
 			<View
-				{ ...{ pose, initialPose } }
+				{...{ pose, initialPose }}
 				style={{
 					height: rad * .1,
 					width: rad * 2.2,
@@ -102,7 +169,7 @@ class TrendCircle extends Component {
 					height: rad * .1,
 					backgroundColor: Colors.c,
 					borderRadius: 1000,
-				}}/>
+				}} />
 			</View>
 		)
 	}

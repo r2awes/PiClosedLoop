@@ -40,7 +40,7 @@ const AppFlow = createAppContainer(
 
 const App = () => (
 	<Bluetooth>
-		<StatusBar backgroundColor={Colors.a}/>
+		<StatusBar backgroundColor={Colors.d}/>
 		<SafeAreaView style={{
 			flex: 1,
 		}}>

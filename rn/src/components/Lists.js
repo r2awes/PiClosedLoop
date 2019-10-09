@@ -38,14 +38,14 @@ const formatDate = time => {
 
 class BGListItem extends Component {
 	render() {
-		let { level, time, targets, trend, pose, dose } = this.props;
+		let { level, time, targets, trend, pose } = this.props;
 		let date = formatDate(time)
 		let color = bgColor(level, targets);
 		return (
 			<View
 				{...{ pose }}
 				style={{
-					backgroundColor: Colors.c,
+					backgroundColor: Colors.d,
 					borderRadius: 10,
 					height: 75,
 					paddingHorizontal: 20,
@@ -63,15 +63,14 @@ class BGListItem extends Component {
 				}}>
 					<Text style={{
 						fontFamily: "Montserrat-Regular",
-						color: dose ? Colors.c : color,
+						color: color,
 						fontSize: 20,
-						marginRight: dose ? null : 20
-					}}>{level || dose}</Text>
-					{ dose ? null : <RenderTrend {...{ trend, color, size: 20 }} />}
+					}}>{level}</Text>
+					<RenderTrend {...{ trend, color, size: 20 }} />
 				</View>
 				<Text style={{
 					fontFamily: "Montserrat-Medium",
-					color: Colors.a,
+					color: Colors.c,
 					fontSize: 18
 				}}>{date}</Text>
 			</View>
@@ -87,13 +86,71 @@ class BGList extends Component {
 				{...{data, renderItem, pose, initialPose}}
 				keyExtractor={item => `bg-${item.time}`}
 				ItemSeparatorComponent={() => <View style={{paddingTop: 5}}/>}
-				style={{flex: 1, width: "100%", height: 260}}
+				style={{flex: 1, width: "100%"}}
 			/>
 		)
 	}
 }
 
+class AdjListItem extends Component {
+	render() {
+		let { time, pose, dose } = this.props;
+		let date = formatDate(time)
+		return (
+			<View
+				{...{ pose }}
+				style={{
+					backgroundColor: Colors.d,
+					borderRadius: 10,
+					height: 75,
+					paddingHorizontal: 20,
+					flexDirection: "row",
+					alignItems: "center",
+					justifyContent: "space-between"
+				}}
+			>
+				<View style={{
+					flexDirection: "row",
+					paddingHorizontal: 10,
+					paddingVertical: 5,
+					borderRadius: 10,
+					backgroundColor: Colors.a
+				}}>
+					<Text style={{
+						fontFamily: "Montserrat-Regular",
+						color: Colors.c,
+						fontSize: 20,
+						marginRight: dose ? null : 20
+					}}>{dose}</Text>
+				</View>
+				<Text style={{
+					fontFamily: "Montserrat-Medium",
+					color: Colors.c,
+					fontSize: 18
+				}}>{date}</Text>
+			</View>
+		)
+	}
+}
+
+class AdjList extends Component {
+	render() {
+		let { pose, initialPose, data, renderItem } = this.props;
+		return (
+			<FlatList
+				{...{ data, renderItem, pose, initialPose }}
+				keyExtractor={item => `adj-${item.time}`}
+				ItemSeparatorComponent={() => <View style={{ paddingTop: 5 }} />}
+				style={{ flex: 1, width: "100%" }}
+			/>
+		)
+	}
+}
+
+
 export {
 	BGListItem,
-	BGList
+	BGList,
+	AdjListItem,
+	AdjList
 }

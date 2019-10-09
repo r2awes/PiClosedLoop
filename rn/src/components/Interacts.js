@@ -46,7 +46,23 @@ class SegConSlider extends Component {
 	}
 }
 
+const Button = ({ text, onPress }) => (
+	<TouchableNativeFeedback {...{ onPress }}>
+		<Text style={{
+			fontSize: 18,
+			color: Colors.c,
+			fontFamily: "Montserrat-Regular",
+			padding: 20,
+			borderRadius: 10,
+			backgroundColor: Colors.d,
+			width: "100%",
+			textAlign: "center"
+		}}>{text}</Text>
+	</TouchableNativeFeedback>
+)
+
 export {
 	SegConSlider,
-	SegConText
+	SegConText,
+	Button
 }

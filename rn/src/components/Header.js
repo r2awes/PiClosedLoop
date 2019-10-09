@@ -56,6 +56,9 @@ class MenuButton extends Component {
 					fontSize: 40,
 					paddingTop: 20,
 					paddingLeft: 20,
+					borderRadius: 10,
+					margin: 10,
+					backgroundColor: Colors.d,
 					color: Colors.c
 				}}
 			>{route}</Text>

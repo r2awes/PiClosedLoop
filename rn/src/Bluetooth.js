@@ -94,21 +94,77 @@ export class Bluetooth extends Component {
 					"level": 90,
 					"scale": true,
 					"trend": -1
-				}
+				},
+				{
+					"time": "2019-10-02T22:16:03.686581Z",
+					"level": 200,
+					"scale": true,
+					"trend": -2
+				},
+				{
+					"time": "2019-10-02T22:21:03.686581Z",
+					"level": 253,
+					"scale": true,
+					"trend": 2
+				},
+				{
+					"time": "2019-10-02T22:26:03.686581Z",
+					"level": 200,
+					"scale": true,
+					"trend": -2
+				},
+				{
+					"time": "2019-10-02T22:31:03.686581Z",
+					"level": 90,
+					"scale": true,
+					"trend": -1
+				},
+				{
+					"time": "2019-10-02T22:36:03.686581Z",
+					"level": 200,
+					"scale": true,
+					"trend": -2
+				},
+				{
+					"time": "2019-10-02T22:41:03.686581Z",
+					"level": 90,
+					"scale": true,
+					"trend": -1
+				},
+				{
+					"time": "2019-10-02T22:46:03.686581Z",
+					"level": 200,
+					"scale": true,
+					"trend": -2
+				},
 			],
 			"adjustments": [
 				{
 					"time": "2019-10-02T22:01:03.698931Z",
-					"dose": -0.2,
+					"dose": 0.2,
 					"scale": true
-				}
+				},
+				{
+					"time": "2019-10-02T22:16:03.698931Z",
+					"dose": 2,
+					"scale": true
+				},
+				{
+					"time": "2019-10-02T22:31:03.698931Z",
+					"dose": 20,
+					"scale": true
+				},
+				{
+					"time": "2019-10-02T22:46:03.698931Z",
+					"dose": .25,
+					"scale": true
+				},
 			],
-			"cdc": 2.5
+			"cdc": 5
 		}
 		let {level, trend} = rec.bg.reverse()[0]
 		this.setState({level, trend})
 
-		rec.adjustments.forEach( a => rec.bg.push(a) )
 		rec.bg.sort( (a, b) => new Date(a.time) < new Date(b.time) )
 
 		return rec
@@ -121,7 +177,7 @@ export class Bluetooth extends Component {
 
 	setBGRecord = bg => {
 		var val = this.getBGRecord()
-		val.bg.push(bg)
+		val.bg = [...val.bg, bg]
 		return val
 	}
 

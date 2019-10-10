@@ -31,21 +31,12 @@ class PiAdvertisement(Advertisement):
 		self.add_local_name("Pi")
 		self.include_tx_power = True
 
-
 class PiService(Service):
 	PI_SVC_UUID = "00000001-710e-4a5b-8d75-3e5b444bc3cf"
 
 	def __init__(self, index):
-		self.farenheit = True
 		Service.__init__(self, index, self.PI_SVC_UUID, True)
 		self.add_characteristic(BGCharacteristic(self))
-
-	def is_farenheit(self):
-		return self.farenheit
-
-	def set_farenheit(self, farenheit):
-		self.farenheit = farenheit
-
 
 class BGCharacteristic(Characteristic):
 	BG_CHARACTERISTIC_UUID = "00000002-710e-4a5b-8d75-3e5b444bc3cf"
@@ -56,15 +47,16 @@ class BGCharacteristic(Characteristic):
 		Characteristic.__init__( self, self.BG_CHARACTERISTIC_UUID, ["notify", "read"], service)
 		self.add_descriptor(BGDescriptor(self))
 
-	def get_bg(self):
+	def get_bg(self, bg):
 		value = []
-		for b in "10":
+		for b in bg:
 			value.append(dbus.Byte(b.encode()))
 		return value
 
 	def set_bg_callback(self):
 		if self.notifying:
-			value = self.get_bg()
+			bg = input("Set Bg:")
+			value = self.get_bg(bg)
 			self.PropertiesChanged(GATT_CHRC_IFACE, {"Value": value}, [])
 
 		return self.notifying
@@ -74,8 +66,9 @@ class BGCharacteristic(Characteristic):
 			return
 
 		self.notifying = True
+		bg = input("Set Bg:")
 
-		value = self.get_bg()
+		value = self.get_bg(bg)
 		self.PropertiesChanged(GATT_CHRC_IFACE, {"Value": value}, [])
 		self.add_timeout(NOTIFY_TIMEOUT, self.set_bg_callback)
 
@@ -83,7 +76,8 @@ class BGCharacteristic(Characteristic):
 		self.notifying = False
 
 	def ReadValue(self, options):
-		value = self.get_bg()
+		bg = input("Set Bg:")
+		value = self.get_bg(bg)
 
 		return value
 

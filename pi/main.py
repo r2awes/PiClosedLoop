@@ -11,6 +11,8 @@ import dbus
 from advertisement import Advertisement
 from service import Application, Service, Characteristic, Descriptor
 
+import json
+
 GATT_CHRC_IFACE = "org.bluez.GattCharacteristic1"
 NOTIFY_TIMEOUT = 5000
 
@@ -51,14 +53,13 @@ class BGCharacteristic(Characteristic):
 	def get_bg(self):
 		value = []
 		r = Record()
-		bgs = json.loads(open(r.getLatestRecord(full=True), "r"))["bg"][self.current]["level"]
-		
+		bgs = str(json.loads(open("bg/" + r.getLatestRecord(full=True),"r").read())["bg"][0]["level"])
 		if( self.current == self.max ):
 			self.current = 0
 		else:
 			self.current += 1
 
-		for b in bgs:
+		for b in "225":
 			value.append(dbus.Byte(b.encode()))
 		return value
 

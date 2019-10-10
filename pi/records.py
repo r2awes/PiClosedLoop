@@ -15,7 +15,7 @@ class Record():
 
 	# returns datetime of latest record create in ISO format
 	def getLatestRecord(self, full=False):
-		a = sorted(os.listdir(os.getcwd() + "/pi/bg"))
+		a = sorted(os.listdir(os.getcwd() + "/bg"))
 		l = ""
 		if( not full ):
 			try:
@@ -24,7 +24,8 @@ class Record():
 				l = ""
 			return l
 		else:
-			return a
+			print(a[-1])
+			return a[-1]
 
 	# gets scroll rate setting
 	def getScrollRate(self):

@@ -56,7 +56,7 @@ class BGCharacteristic(Characteristic):
 		if( self.current == self.max ):
 			self.current = 0
 		else:
-			self.current++
+			self.current += 1
 
 		for b in bgs:
 			value.append(dbus.Byte(b.encode()))

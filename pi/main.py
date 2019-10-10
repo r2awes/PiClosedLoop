@@ -43,20 +43,28 @@ class BGCharacteristic(Characteristic):
 
 	def __init__(self, service):
 		self.notifying = False
-
+		self.current = 0
+		self.max = 2
 		Characteristic.__init__( self, self.BG_CHARACTERISTIC_UUID, ["notify", "read"], service)
 		self.add_descriptor(BGDescriptor(self))
 
-	def get_bg(self, bg):
+	def get_bg(self):
 		value = []
-		for b in bg:
+		r = Record()
+		bgs = json.loads(open(r.getLatestRecord(full=True), "r"))["bg"][self.current]["level"]
+		
+		if( self.current == self.max ):
+			self.current = 0
+		else:
+			self.current++
+
+		for b in bgs:
 			value.append(dbus.Byte(b.encode()))
 		return value
 
 	def set_bg_callback(self):
 		if self.notifying:
-			bg = input("Set Bg:")
-			value = self.get_bg(bg)
+			value = self.get_bg()
 			self.PropertiesChanged(GATT_CHRC_IFACE, {"Value": value}, [])
 
 		return self.notifying
@@ -66,9 +74,7 @@ class BGCharacteristic(Characteristic):
 			return
 
 		self.notifying = True
-		bg = input("Set Bg:")
-
-		value = self.get_bg(bg)
+		value = self.get_bg()
 		self.PropertiesChanged(GATT_CHRC_IFACE, {"Value": value}, [])
 		self.add_timeout(NOTIFY_TIMEOUT, self.set_bg_callback)
 
@@ -76,8 +82,7 @@ class BGCharacteristic(Characteristic):
 		self.notifying = False
 
 	def ReadValue(self, options):
-		bg = input("Set Bg:")
-		value = self.get_bg(bg)
+		value = self.get_bg()
 
 		return value
 

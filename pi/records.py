@@ -14,14 +14,17 @@ class Record():
 		return json.loads(open("pi/settings.json", "r").read())["recordInterval"]
 
 	# returns datetime of latest record create in ISO format
-	def getLatestRecord(self):
+	def getLatestRecord(self, full=False):
 		a = sorted(os.listdir(os.getcwd() + "/pi/bg"))
 		l = ""
-		try:
-			l = a[-1][0:-8]
-		except IndexError:
-			l = ""
-		return l
+		if( not full ):
+			try:
+				l = a[-1][0:-8]
+			except IndexError:
+				l = ""
+			return l
+		else:
+			return a
 
 	# gets scroll rate setting
 	def getScrollRate(self):

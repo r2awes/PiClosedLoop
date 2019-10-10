@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Text, View, ScrollView, TouchableNativeFeedback } from 'react-native';
+import { Text, View } from 'react-native';
 import { InsulinLeft } from '../components/Trackers';
-import { AdjListItem as ALI, AdjList as AL } from '../components/Lists';
+import { AdjListItem as ALI, AllList as AL } from '../components/Lists';
 import { Button } from '../components/Interacts'
 import { BleCx } from '../Bluetooth';
 import Colors from '../Colors';
@@ -23,6 +23,7 @@ export default class Dose extends Component {
 		let data = await this.context.getBGRecord()
 		let insulinLeft = (data.cdc - 2.5) * (30)
 		data = data.adjustments
+		data.sort((a, b) => new Date(a.time) < new Date(b.time))
 		this.setState({ data, insulinLeft })
 	}
 

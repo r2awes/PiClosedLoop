@@ -1,7 +1,9 @@
 import React, { Component, Fragment } from 'react';
-import { Text, View, Animated, Dimensions } from 'react-native';
+import { Text, View, Animated, Dimensions, ScrollView } from 'react-native';
 import Colors from '../Colors';
 import posed from 'react-native-pose';
+import { AreaChart } from 'react-native-svg-charts';
+import * as shape from 'd3-shape';
 
 let width = Dimensions.get("window").width - 40
 
@@ -197,3 +199,73 @@ TrendCircle = posed(TrendCircle)({
 		transition: { type: 'spring', stiffness: 100 }
 	}
 })
+
+const shapeArray = data => {
+	let level = [];
+	let dose = [];
+
+	data.forEach(d => {
+		if (d.level != null) {
+			level = [...level, d.level]
+		}
+		else if (d.dose != null) {
+			dose = [...dose, d.dose]
+		}
+	})
+
+	return [level, dose]
+}
+
+const chart = {
+	width: 2 * width,
+	height: 300,
+} 
+
+const chartWrap = { position: "absolute", height: 300, width: chart.width }
+
+export class Graph extends Component {
+	constructor(props) {
+		super(props)
+
+		this.scroll;
+	}
+
+	shouldComponentUpdate = (nP, nS) => {
+		let { follow, show } = this.props;
+		if( nP.follow != follow || nP.show != show ) {
+			if (this.scroll) this.scroll.scrollTo({ y: 0, x: follow * (width + 40) })
+			return true
+		}
+		return false
+	}
+	
+	render() {
+		let { data, show } = this.props
+		var series = shapeArray(data)
+		return (
+			<ScrollView 
+				horizontal
+				style={{borderRadius: 10, flex: 1, width: width + 40}}
+				ref={ r => this.scroll = r }
+				scrollEnabled={false}
+			>
+				<View style={chartWrap}>
+					<AreaChart
+						style={{...chart, opacity: show <= 1 ? 1 : 0}}
+						data={series[0]}
+						contentInset={{ left: -1, top: 10, bottom: 0 }}
+						curve={shape.curveMonotoneX}
+						svg={{ fill: Colors.rgb(Colors.c + "2e"), stroke: Colors.c }}
+					/>
+				</View>
+				<AreaChart
+					style={{ ...chart, opacity: show >= 1 ? 1 : 0 }}
+					data={series[1]}
+					contentInset={{ left: -1, top: 10, bottom: 0 }}
+					curve={shape.curveMonotoneX}
+					svg={{ fill: Colors.rgb(Colors.e + "2e"), stroke: Colors.e }}
+				/>
+			</ScrollView>
+		)
+	}
+}

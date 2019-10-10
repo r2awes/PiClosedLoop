@@ -32,8 +32,12 @@ const RenderTrend = ({ trend, color, size }) => {
 }
 
 const formatDate = time => {
+	const month = t => {
+		return [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ][ t.getMonth()]
+	}
 	let t = new Date(time)
-	return t.toTimeString().slice(0, 5)
+	
+	return t.getDate() + " " + month(t) + ", " + t.toTimeString().slice(0, 5)
 }
 
 class BGListItem extends Component {
@@ -147,10 +151,32 @@ class AdjList extends Component {
 	}
 }
 
+class AllList extends Component {
+	render() {
+		let { pose, initialPose, data, renderItem, onScroll } = this.props;
+		return (
+			<FlatList
+				{...{ data, renderItem, pose, initialPose, onScroll }}
+				scrollEventThrottle={75}
+				keyExtractor={item => `${item.dose ? "adj" : "bg"}-${item.time}`}
+				ItemSeparatorComponent={() => <View style={{ paddingTop: 5 }} />}
+				style={{ flex: 1, width: "100%" }}
+			/>
+		)
+	}
+}
+
+class AllListItem extends Component {
+	render(){
+		let {dose} = this.props;
+		if(dose) return <AdjListItem {...this.props}/>
+		else return <BGListItem {...this.props}/>
+	}
+}
 
 export {
 	BGListItem,
-	BGList,
 	AdjListItem,
-	AdjList
+	AllListItem,
+	AllList
 }

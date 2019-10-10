@@ -109,13 +109,13 @@ export class Bluetooth extends Component {
 				},
 				{
 					"time": "2019-10-02T22:26:03.686581Z",
-					"level": 200,
+					"level": 100,
 					"scale": true,
 					"trend": -2
 				},
 				{
 					"time": "2019-10-02T22:31:03.686581Z",
-					"level": 90,
+					"level": 139,
 					"scale": true,
 					"trend": -1
 				},
@@ -133,7 +133,7 @@ export class Bluetooth extends Component {
 				},
 				{
 					"time": "2019-10-02T22:46:03.686581Z",
-					"level": 200,
+					"level": 53,
 					"scale": true,
 					"trend": -2
 				},
@@ -141,7 +141,7 @@ export class Bluetooth extends Component {
 			"adjustments": [
 				{
 					"time": "2019-10-02T22:01:03.698931Z",
-					"dose": 0.2,
+					"dose": 1,
 					"scale": true
 				},
 				{
@@ -164,9 +164,6 @@ export class Bluetooth extends Component {
 		}
 		let {level, trend} = rec.bg.reverse()[0]
 		this.setState({level, trend})
-
-		rec.bg.sort( (a, b) => new Date(a.time) < new Date(b.time) )
-
 		return rec
 	}
 	

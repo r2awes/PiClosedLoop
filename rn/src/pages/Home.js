@@ -4,13 +4,12 @@ import { BG } from '../components/Trackers';
 import { BleCx } from '../Bluetooth';
 import Colors from '../Colors';
 import posed from 'react-native-pose';
-import { BGListItem as BGLI, BGList as BGL } from '../components/Lists';
+import { BGListItem as BGLI, AllList as BGL } from '../components/Lists';
 
 export default class Home extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			list: true,
 			data: []
 		}
 	}
@@ -20,6 +19,7 @@ export default class Home extends Component {
 	async componentDidMount() {
 		let data = await this.context.getBGRecord()
 		data = data.bg.slice(1)
+		data.sort((a, b) => new Date(a.time) < new Date(b.time))
 		this.setState({data})
 	}
 

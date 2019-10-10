@@ -189,7 +189,7 @@ export class Bluetooth extends Component {
 		this.manager.startDeviceScan(null,
 			null, (error, device) => {
 				console.log("Scanning...")
-				console.log("Device:", device.name)
+				console.log("Device:", device.name, device.serviceUUIDs)
 				if (error) {
 					console.log("error", error.message)
 					return

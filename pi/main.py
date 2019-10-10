@@ -36,36 +36,35 @@ class PiService(Service):
 	PI_SVC_UUID = "00000001-710e-4a5b-8d75-3e5b444bc3cf"
 
 	def __init__(self, index):
+		self.farenheit = True
 		Service.__init__(self, index, self.PI_SVC_UUID, True)
+		self.add_characteristic(BGCharacteristic(self))
 
-class TempCharacteristic(Characteristic):
-	TEMP_CHARACTERISTIC_UUID = "00000002-710e-4a5b-8d75-3e5b444bc3cf"
+	def is_farenheit(self):
+		return self.farenheit
+
+	def set_farenheit(self, farenheit):
+		self.farenheit = farenheit
+
+
+class BGCharacteristic(Characteristic):
+	BG_CHARACTERISTIC_UUID = "00000002-710e-4a5b-8d75-3e5b444bc3cf"
 
 	def __init__(self, service):
 		self.notifying = False
 
-		Characteristic.__init__( self, self.TEMP_CHARACTERISTIC_UUID, ["notify", "read"], service)
-		self.add_descriptor(TempDescriptor(self))
+		Characteristic.__init__( self, self.BG_CHARACTERISTIC_UUID, ["notify", "read"], service)
+		self.add_descriptor(BGDescriptor(self))
 
-	def get_temperature(self):
+	def get_bg(self):
 		value = []
-		unit = "C"
-
-		cpu = CPUTemperature()
-		temp = cpu.temperature
-		if self.service.is_farenheit():
-			temp = (temp * 1.8) + 32
-			unit = "F"
-
-		strtemp = str(round(temp, 1)) + " " + unit
-		for c in strtemp:
-			value.append(dbus.Byte(c.encode()))
-
+		for b in "10":
+			value.append(dbus.Byte(b.encode()))
 		return value
 
-	def set_temperature_callback(self):
+	def set_bg_callback(self):
 		if self.notifying:
-			value = self.get_temperature()
+			value = self.get_bg()
 			self.PropertiesChanged(GATT_CHRC_IFACE, {"Value": value}, [])
 
 		return self.notifying
@@ -76,37 +75,34 @@ class TempCharacteristic(Characteristic):
 
 		self.notifying = True
 
-		value = self.get_temperature()
+		value = self.get_bg()
 		self.PropertiesChanged(GATT_CHRC_IFACE, {"Value": value}, [])
-		self.add_timeout(NOTIFY_TIMEOUT, self.set_temperature_callback)
+		self.add_timeout(NOTIFY_TIMEOUT, self.set_bg_callback)
 
 	def StopNotify(self):
 		self.notifying = False
 
 	def ReadValue(self, options):
-		value = self.get_temperature()
+		value = self.get_bg()
 
 		return value
 
 
-class TempDescriptor(Descriptor):
-	TEMP_DESCRIPTOR_UUID = "2901"
-	TEMP_DESCRIPTOR_VALUE = "CPU Temperature"
+class BGDescriptor(Descriptor):
+	BG_DESCRIPTOR_UUID = "2901"
+	BG_DESCRIPTOR_VALUE = "BG"
 
 	def __init__(self, characteristic):
-			Descriptor.__init__(
-					self, self.TEMP_DESCRIPTOR_UUID,
-					["read"],
-					characteristic)
+		Descriptor.__init__( self, self.BG_DESCRIPTOR_UUID, ["read"], characteristic)
 
 	def ReadValue(self, options):
-			value = []
-			desc = self.TEMP_DESCRIPTOR_VALUE
+		value = []
+		desc = self.BG_DESCRIPTOR_VALUE
 
-			for c in desc:
-					value.append(dbus.Byte(c.encode()))
+		for c in desc:
+			value.append(dbus.Byte(c.encode()))
 
-			return value
+		return value
 
 app = Application()
 app.add_service(PiService(0))

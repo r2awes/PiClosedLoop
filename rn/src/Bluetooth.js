@@ -1,4 +1,5 @@
 import React, { Component, createContext } from 'react';
+import { BleManager } from 'react-native-ble-plx';
 
 export const BleCx = createContext({
 	level: 0,
@@ -16,7 +17,8 @@ export const BleCm = BleCx.Consumer;
 export class Bluetooth extends Component {
 	constructor(props) {
 		super(props)
-	
+		this.manager = new BleManager();
+		
 		this.state = {
 			level: 0,
 			trend: 0,
@@ -29,6 +31,11 @@ export class Bluetooth extends Component {
 		}
 	}
 	
+	componentDidMount() {
+		this.checkState()
+	}
+	
+
 	getSettings = () => {
 		return {
 			"version": 1,
@@ -176,6 +183,18 @@ export class Bluetooth extends Component {
 		var val = this.getBGRecord()
 		val.bg = [...val.bg, bg]
 		return val
+	}
+
+	checkState = () => {
+		this.manager.startDeviceScan(null,
+			null, (error, device) => {
+				console.log("Scanning...")
+				console.log("Device:", device.name)
+				if (error) {
+					console.log("error", error.message)
+					return
+				}
+			});
 	}
 
 	render() {

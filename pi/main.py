@@ -26,7 +26,6 @@ for i in range(0, 3):
 	print(bgs[i])
 	sleep( 60 * 5 ) """
 
-
 class PiAdvertisement(Advertisement):
 	def __init__(self, index):
 		Advertisement.__init__(self, index, "peripheral")
@@ -54,7 +53,7 @@ class BGCharacteristic(Characteristic):
 		value = []
 		r = Record()
 
-		for b in r.getLatestRecord(full=True):
+		for b in r.getLatestLevels(0):
 			value.append(dbus.Byte(b.encode()))
 		return value
 
@@ -106,17 +105,7 @@ app.register()
 adv = PiAdvertisement(0)
 adv.register()
 
-""" try:
+try:
 	app.run()
 except KeyboardInterrupt:
 	app.quit()
- """
-value = []
-r = Record()
-bgs = str(json.loads(open("bg/" + r.getLatestRecord(full=True), "r").read())["bg"][0]["level"])
-print(bgs)
-
-for b in bgs:
-	value.append(dbus.Byte(b.encode()))
-
-print(value)

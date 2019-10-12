@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 import json
 import os
+import sys
 
 from bolus import Bolus
 from bg import BG
@@ -10,11 +11,11 @@ class Record():
 	latestRecord = ""
 
 	# returns interval of new record file creation in hours
-	def getRecordInt(self):
+	def getRecordInt( self ):
 		return json.loads(open("pi/settings.json", "r").read())["recordInterval"]
 
-	# returns datetime of latest record create in ISO format
-	def getLatestRecord(self, full=False):
+	# returns datetime of latest record created in ISO format or the full name of said record
+	def getLatestRecordName( self, full=False ):
 		a = sorted(os.listdir(os.getcwd() + "/bg"))
 		l = ""
 		if( not full ):
@@ -26,18 +27,28 @@ class Record():
 		else:
 			return a[-1]
 
+	# returns the blood glucose levels of the latest record or a specified record ( Index of specified record must be positive )
+	def getLatestLevels( self, index=-1 ):
+		if( index > -1 ):
+			return str(json.loads(open("bg/" + r.getLatestRecordName(full=True), "r").read())["bg"][index]["level"])
+		else:
+			levels = []
+			for i in json.loads(open("bg/" + r.getLatestRecordName(full=True), "r").read())["bg"]:
+				levels.append( i["level"] )
+			return levels
+
 	# gets scroll rate setting
-	def getScrollRate(self):
+	def getScrollRate( self ):
 		return json.loads(open("pi/settings.json", "r").read())["bolus"]["scrollRate"]
 
 	# gets current duty cycle of the servo
-	def getDutyCycle(self):
-		return json.loads(open("pi/bg/"+self.getLatestRecord()+".bg.json").read())["cdc"]
+	def getDutyCycle( self ):
+		return json.loads(open("pi/bg/"+self.getLatestRecordName()+".bg.json").read())["cdc"]
 
 	# stores bg value in a json record
 	def createBGRecord( self, bg ):
 		self.recordInterval = self.getRecordInt()
-		self.latestRecord = self.getLatestRecord()
+		self.latestRecord = self.getLatestRecordName()
 
 		recordDelta = 0
 		if( self.latestRecord == "" ):

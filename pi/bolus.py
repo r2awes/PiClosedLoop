@@ -78,7 +78,7 @@ class Bolus():
 
 			for i in range(amount / scrollRate):
 				dutycycle = lastDC + ( i * ratio )
-				servo.changeDutyCycle( dutycycle )
+				servo.ChangeDutyCycle( dutycycle )
 				print("Servo dutycycle is now {}.\n{} units out of {} of insulin delivered as of now.".format(dutycycle, i * scrollRate, amount))
 				r.setDutyCycle( dutycycle )
 				sleep(.5)

@@ -54,12 +54,13 @@ class BGCharacteristic(Characteristic):
 		value = []
 		r = Record()
 		bgs = str(json.loads(open("bg/" + r.getLatestRecord(full=True),"r").read())["bg"][0]["level"])
+		print( bgs )
 		if( self.current == self.max ):
 			self.current = 0
 		else:
 			self.current += 1
 
-		for b in "225":
+		for b in bgs:
 			value.append(dbus.Byte(b.encode()))
 		return value
 

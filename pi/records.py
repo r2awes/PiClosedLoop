@@ -24,7 +24,6 @@ class Record():
 				l = ""
 			return l
 		else:
-			print(a[-1])
 			return a[-1]
 
 	# gets scroll rate setting

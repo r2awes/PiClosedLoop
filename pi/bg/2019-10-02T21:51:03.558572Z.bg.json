@@ -25,7 +25,7 @@
   "adjustments": [
     {
       "time": "2019-10-02T22:01:03.698931Z",
-      "dose": -0.2,
+      "dose": 0.2,
       "scale": true
     }
   ],

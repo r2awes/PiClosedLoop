@@ -53,14 +53,8 @@ class BGCharacteristic(Characteristic):
 	def get_bg(self):
 		value = []
 		r = Record()
-		bgs = str(json.loads(open("bg/" + r.getLatestRecord(full=True),"r").read())["bg"][0]["level"])
-		print( bgs )
-		if( self.current == self.max ):
-			self.current = 0
-		else:
-			self.current += 1
 
-		for b in bgs:
+		for b in r.getLatestRecord(full=True):
 			value.append(dbus.Byte(b.encode()))
 		return value
 
@@ -112,7 +106,17 @@ app.register()
 adv = PiAdvertisement(0)
 adv.register()
 
-try:
+""" try:
 	app.run()
 except KeyboardInterrupt:
 	app.quit()
+ """
+value = []
+r = Record()
+bgs = str(json.loads(open("bg/" + r.getLatestRecord(full=True), "r").read())["bg"][0]["level"])
+print(bgs)
+
+for b in bgs:
+	value.append(dbus.Byte(b.encode()))
+
+print(value)

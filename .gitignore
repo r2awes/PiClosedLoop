@@ -1,3 +1,5 @@
 *.svg
 
 fonts
+
+pi/__pycache__

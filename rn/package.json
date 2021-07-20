@@ -15,7 +15,7 @@
     "flubber": "^0.4.2",
     "popmotion": "^8.7.0",
     "react": "16.9.0",
-    "react-native": "0.61.2",
+    "react-native": "0.62.3",
     "react-native-ble-plx": "^1.1.0",
     "react-native-gesture-handler": "^1.4.1",
     "react-native-pose": "^0.9.1",
